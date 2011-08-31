@@ -7,8 +7,8 @@ module ActionDispatch
         if SubdomainFu.needs_rewrite?(options[:subdomain], options[:host]) || options[:only_path] == false
           options[:only_path] = false if SubdomainFu.override_only_path?
           options[:host] = SubdomainFu.rewrite_host_for_subdomains(options[:subdomain], options[:host])
-          # puts "options[:host]: #{options[:host].inspect}"
         end
+        options.delete(:subdomain) if (route_name = options[:use_route]) && (route = named_routes.get(route_name)) && route.requirements[:subdomain].blank?
         url_for_without_subdomains(options)
       end
       alias_method_chain :url_for, :subdomains
