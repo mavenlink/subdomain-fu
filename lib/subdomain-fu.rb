@@ -3,7 +3,7 @@ require 'subdomain_fu/url_rewriter'
 module SubdomainFu
   class << self
     attr_accessor :config
-    
+
     def config
       self.config = Configuration.new unless @config
       @config
@@ -11,12 +11,12 @@ module SubdomainFu
   end
 
   # The configurable options of Subdomain Fu. Use like so:
-  # 
+  #
   #     SubdomainFu.configure do |config|
   #       config.tld_size = 2
   #       config.preferred_mirror = 'www'
   #     end
-  # 
+  #
   # Available configurations are:
   #
   # <tt>tld_size</tt>: :: The size of the top-level domain. For example, 'localhost' is 0, 'example.com' is 1, and 'example.co.uk' is 2.
@@ -27,27 +27,27 @@ module SubdomainFu
     self.config ||= Configuration.new
     yield(self.config)
   end
-  
+
   class Configuration
     attr_accessor :tld_sizes, :mirrors, :preferred_mirror, :override_only_path
-    
+
     @@defaults = {
       :tld_sizes => {:development => 1, :test => 1, :production => 1},
       :mirrors => %w(www),
       :preferred_mirror => nil,
       :override_only_path => false
     }
-    
+
     def initialize
       @@defaults.each_pair do |k, v|
         self.send("#{k}=", v)
       end
     end
-    
+
     def tld_size=(size)
       tld_sizes[Rails.env.to_sym] = size
     end
-    
+
     def tld_size
       tld_sizes[Rails.env.to_sym]
     end
@@ -161,7 +161,7 @@ module SubdomainFu
   def self.current_domain(request)
     domain = ""
     domain << request.subdomains[1..-1].join(".") + "." if request.subdomains.length > 1
-    domain << request.domain + request.port_string
+    domain << request.domain.to_s + request.port_string
   end
 
   module Controller
