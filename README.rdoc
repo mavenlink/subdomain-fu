@@ -1,3 +1,7 @@
+= ARCHIVE NOTICE Feb 27 2026
+
+This repo is archived and will not receive any future updates.
+
 = SubdomainFu
 
 SubdomainFu provides a modern implementation of subdomain handling in Rails.
